@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: bitnami/mongodb:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - ${MONGODB_PORT}:27017
+    networks:
+     - local
+    environment:
+      # With --smallfiles, MongoDB uses a smaller default file size.
+      MONGODB_EXTRA_FLAGS: --smallfiles
+      MONGODB_ENABLE_DIRECTORY_PER_DB: 'yes'
+      MONGODB_USERNAME: ${MONGODB_USERNAME}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      MONGODB_DATABASE: ${MONGODB_DATABASE}
+
+networks:
+  local:
+    external: false

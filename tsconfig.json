@@ -1,0 +1,45 @@
+{
+  "typeAcquisition": {
+    "enable": true
+  },
+  "compilerOptions": {
+    /* Declarations and maps */
+    "alwaysStrict": true,
+    "declaration": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    /* Code quality */
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
+    /* Module strategy */
+    "moduleResolution": "node",
+    "target": "esnext",
+    /* Folders */
+    "baseUrl": "src",
+    "outDir": "dist",
+    "rootDir": "src",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+  },
+  "exclude": [
+    "node_modules",
+    "__tests__",
+  ],
+  "include": [
+    "src"
+  ]
+}
