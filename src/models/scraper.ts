@@ -1,6 +1,7 @@
 import { isEmpty, isNil, get } from 'lodash'
 
 import { extractBody } from '../helpers/jsdom'
+import { parseDate } from '../helpers/date'
 
 const getRegionUrls = async (): Promise<string[]> => {
   const BASE_URL = 'https://www.visorando.com/'
@@ -53,7 +54,7 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
   return ({
     url: hikingUrl,
     title: (get(title, 'textContent', '') as string).trim(),
-    date: get(date, 'textContent', ''),
+    ...parseDate(get(date, 'textContent', '') as string),
     description: get(description, 'textContent', ''),
     ...details,
     rating,
