@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil, get } from 'lodash'
 
 import { extractBody } from '../helpers/jsdom'
 
@@ -24,7 +24,44 @@ const getHikingUrls = async (regionUrl: string): Promise<string[]> => {
     .map(url => url.trim())
 }
 
+const getHikingDetails = async (hikingUrl: string): Promise<any> => {
+  const document = await extractBody(hikingUrl)
+  const content = document.querySelector('.innerContentVR')
+
+  if (isNil(content)) return null
+
+  const title = content.querySelector('h1[itemprop="name"]')
+  const date = content.querySelector('.rando-date')
+  const description = content.querySelector('p')
+
+  const keys = content.querySelectorAll('.liste-topics-blanc-inner strong')
+  const details = Array.from(keys).reduce((acc, element: Element) => {
+    const value = get(element, 'nextSibling.textContent', '').trim()
+    const key = (get(element, 'textContent', '') as string)
+      .replace(':', '')
+      .trim()
+
+    return ({ ...acc, [key]: value })
+  }, {})
+
+  const aggregateRating = content.querySelector('#topics-rando .topic:first-child .topic-text p[itemprop="aggregateRating"]')
+  const rating = (get(aggregateRating, 'textContent', '') as string)
+    .split('\n')
+    .map(el => el.trim())
+    .filter(el => !isEmpty(el))
+
+  return ({
+    url: hikingUrl,
+    title: (get(title, 'textContent', '') as string).trim(),
+    date: get(date, 'textContent', ''),
+    description: get(description, 'textContent', ''),
+    ...details,
+    rating,
+  })
+}
+
 export {
   getRegionUrls,
   getHikingUrls,
+  getHikingDetails,
 }
