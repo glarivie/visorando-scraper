@@ -1,14 +1,16 @@
-const days = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
-const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'décembre']
+import { get, keys } from 'lodash'
 
+import { days, months } from '../constants'
 interface IDates {
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 const parseDate = (str: string): IDates => {
-  const re = new RegExp(`(${days.join('|')})\\s([0-3][0-9])\\s(${months.join('|')})\\s(20[0-2][0-9])`, 'g')
-  const matches = str.match(re)
+  const re = new RegExp(`(${keys(days).join('|')})\\s([0-3][0-9])\\s(${keys(months).join('|')})\\s(20[0-2][0-9])`, 'g')
+  const matches = (str.match(re) || []).map((match: string) => {
+    return match.split(' ').map(el => get(days, el, get(months, el, el))).join(' ')
+  })
 
   return ({
     ...((matches && matches[0]) && { createdAt: new Date(matches[0]) }),

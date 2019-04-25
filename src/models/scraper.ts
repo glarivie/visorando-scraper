@@ -35,7 +35,8 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
 
   const title = content.querySelector('h1[itemprop="name"]')
   const date = content.querySelector('.rando-date')
-  const description = content.querySelector('p')
+  const overview = content.querySelector('p')
+  const steps = content.querySelectorAll('div[itemprop="description"] > p')
 
   const topics = content.querySelector('.liste-topics-blanc-inner')
   const details = (get(topics, 'textContent', '') as string)
@@ -55,9 +56,13 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
     url: hikingUrl,
     title: (get(title, 'textContent', '') as string).trim(),
     ...parseDate(get(date, 'textContent', '') as string),
-    description: get(description, 'textContent', ''),
+    overview: get(overview, 'textContent', ''),
     details: parseDetails(details),
     rating: parseRating(rating),
+    steps: Array
+      .from(steps)
+      .map((element: Element) => get(element, 'textContent', '') as string)
+      .map((step: string) => step.replace(/\n/g, ' ')),
   })
 }
 
