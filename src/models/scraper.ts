@@ -36,7 +36,8 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
   const title = content.querySelector('h1[itemprop="name"]')
   const date = content.querySelector('.rando-date')
   const overview = content.querySelector('p')
-  const steps = content.querySelectorAll('div[itemprop="description"] > p')
+  const description = content.querySelector('div[itemprop="description"]')
+  const steps = isNil(description) ? [] : description.querySelectorAll('p')
 
   const topics = content.querySelector('.liste-topics-blanc-inner')
   const details = (get(topics, 'textContent', '') as string)
