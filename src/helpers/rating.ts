@@ -1,11 +1,4 @@
-interface IRating {
-  average?: number;
-  count?: number;
-  description?: number;
-  map?: number;
-  route?: number;
-
-}
+import { IRating } from '../types'
 
 const parseRating = (arr: string[]): IRating => arr.reduce((acc, line) => {
   const [key, value] = line.split(':').map(el => el.trim())

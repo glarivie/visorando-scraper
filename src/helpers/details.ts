@@ -1,25 +1,6 @@
 import { get, isEqual } from 'lodash'
 
-interface IDetails {
-  reference?: string;
-  duration?: string;
-  distance: number;
-  vertical: {
-    rise: number;
-    drop: number;
-  };
-  altitude: {
-    high: number;
-    low: number;
-  };
-  difficulty?: string;
-  loop: boolean;
-  type: string;
-  region?: string;
-  city?: string;
-  zipCode?: number;
-  coordinate?: string[];
-}
+import { IDetails } from '../types'
 
 const parseDetails = (details: string): IDetails => {
   const results = {
