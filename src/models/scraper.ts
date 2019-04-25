@@ -3,6 +3,7 @@ import { isEmpty, isNil, get } from 'lodash'
 import { extractBody } from '../helpers/jsdom'
 import { parseDate } from '../helpers/date'
 import { parseDetails } from '../helpers/details'
+import parseRating from '../helpers/rating'
 
 const getRegionUrls = async (): Promise<string[]> => {
   const BASE_URL = 'https://www.visorando.com/'
@@ -56,7 +57,7 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
     ...parseDate(get(date, 'textContent', '') as string),
     description: get(description, 'textContent', ''),
     details: parseDetails(details),
-    rating,
+    rating: parseRating(rating),
   })
 }
 
