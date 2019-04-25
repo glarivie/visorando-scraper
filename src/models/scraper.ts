@@ -2,6 +2,7 @@ import { isEmpty, isNil, get } from 'lodash'
 
 import { extractBody } from '../helpers/jsdom'
 import { parseDate } from '../helpers/date'
+import { parseDetails } from '../helpers/details'
 
 const getRegionUrls = async (): Promise<string[]> => {
   const BASE_URL = 'https://www.visorando.com/'
@@ -35,15 +36,13 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
   const date = content.querySelector('.rando-date')
   const description = content.querySelector('p')
 
-  const keys = content.querySelectorAll('.liste-topics-blanc-inner strong')
-  const details = Array.from(keys).reduce((acc, element: Element) => {
-    const value = get(element, 'nextSibling.textContent', '').trim()
-    const key = (get(element, 'textContent', '') as string)
-      .replace(':', '')
-      .trim()
-
-    return ({ ...acc, [key]: value })
-  }, {})
+  const topics = content.querySelector('.liste-topics-blanc-inner')
+  const details = (get(topics, 'textContent', '') as string)
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => !isEmpty(line))
+    .map(line => line.split(':').map(el => el.trim()).join(': '))
+    .join(' ')
 
   const aggregateRating = content.querySelector('#topics-rando .topic:first-child .topic-text p[itemprop="aggregateRating"]')
   const rating = (get(aggregateRating, 'textContent', '') as string)
@@ -56,7 +55,7 @@ const getHikingDetails = async (hikingUrl: string): Promise<any> => {
     title: (get(title, 'textContent', '') as string).trim(),
     ...parseDate(get(date, 'textContent', '') as string),
     description: get(description, 'textContent', ''),
-    ...details,
+    details: parseDetails(details),
     rating,
   })
 }
