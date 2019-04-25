@@ -1,6 +1,9 @@
 import 'dotenv/config'
 
+import './config/mongo'
+
 import { getRegionUrls, getHikingUrls, getHikingDetails } from './models/scraper'
+import { saveHiking } from './models/database'
 // import { sleep } from './helpers/jsdom'
 
 // const { SLEEP } = process.env
@@ -10,7 +13,7 @@ const main = async (): Promise<void> => {
   const hikingUrls = await getHikingUrls(regionUrls[0])
   const hiking = await getHikingDetails(hikingUrls[0])
 
-  console.log(hiking)
+  await saveHiking(hiking)
 
   process.exit(0)
 }
