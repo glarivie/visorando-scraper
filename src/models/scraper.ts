@@ -59,6 +59,8 @@ const getHikingDetails = async (hikingUrl: string): Promise<IHiking> => {
     .map(el => el.trim())
     .filter(el => !isEmpty(el))
 
+  const images = content.querySelectorAll('.homeListPhoto > img')
+
   return ({
     url: hikingUrl,
     title: (get(title, 'textContent', '') as string).trim(),
@@ -85,7 +87,12 @@ const getHikingDetails = async (hikingUrl: string): Promise<IHiking> => {
           rating: parseFloat(get(rating, 'textContent', '0') as string),
           description: (get(description, 'textContent', '') as string).replace(/\n/g, ' '),
         })
-      })
+      }),
+    images: Array.from(images).map((img: Element) => {
+      const thumb = img.getAttribute('src') || ''
+
+      return thumb.replace('/thumbnail/', '/inter/').replace('/t-', '/m-')
+    }),
   })
 }
 

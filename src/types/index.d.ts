@@ -49,6 +49,7 @@ interface IHiking {
   steps: string[];
   rating: IRating;
   reviews: IReview[];
+  images: string[];
 }
 
 export {

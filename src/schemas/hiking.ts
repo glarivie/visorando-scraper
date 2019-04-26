@@ -43,6 +43,7 @@ const Hiking = new mongoose.Schema({
     rating: { type: Number },
     description: { type: String },
   },
+  images: { type: [String] },
 })
 
 export default Hiking
