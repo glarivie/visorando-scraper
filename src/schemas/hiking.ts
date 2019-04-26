@@ -24,7 +24,10 @@ const Hiking = new mongoose.Schema({
     region: { type: String },
     city: { type: String },
     zipCode: { type: Number },
-    coordinate: { type: [String] },
+    coordinate: {
+      lat: { type: Number },
+      lng: { type: Number },
+    },
   },
   steps: { type: [String] },
   rating: {

@@ -1,3 +1,8 @@
+interface ICoordinate {
+  lat: number;
+  lng: number;
+}
+
 interface IDetails {
   reference?: string;
   duration?: string;
@@ -16,7 +21,7 @@ interface IDetails {
   region?: string;
   city?: string;
   zipCode?: number;
-  coordinate?: string[];
+  coordinate?: ICoordinate;
 }
 
 interface IRating {
@@ -47,6 +52,7 @@ interface IHiking {
 }
 
 export {
+  ICoordinate,
   IDetails,
   IRating,
   IHiking,

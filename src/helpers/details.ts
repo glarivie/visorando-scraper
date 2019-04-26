@@ -3,6 +3,8 @@ import { get, isEqual } from 'lodash'
 import { IDetails } from '../types'
 
 const parseDetails = (details: string): IDetails => {
+  const [lat, lng] = (details.match(/Départ:\s+N\s(\d+.\d+)°\s\/\sE\s(\d+.\d+)°/) || []).slice(1, 3).map(Number)
+
   const results = {
     reference: get(details.match(/Ref.\s+(\d+[A-Z]{2})/), '[1]'),
     duration: get(details.match(/Durée moyenne:\s+(\d+h\d{2})\[\?\]/), '[1]'),
@@ -21,7 +23,7 @@ const parseDetails = (details: string): IDetails => {
     region: get(details.match(/Région:\s+(.+) Commune/), '[1]'),
     city: get(details.match(/Commune:\s+(.+)\s\(\d+\)/), '[1]'),
     zipCode: parseInt(get(details.match(/Commune:\s+.+\s\((\d+)\)/), '[1]'), 10),
-    coordinate: (details.match(/Départ:\s+(N\s\d+.\d+°)\s\/\s(E\s\d+.\d+°)/) || []).slice(1, 3),
+    coordinate: { lat, lng },
   }
 
   return results
