@@ -20,7 +20,7 @@ const main = async (): Promise<void> => {
       await saveHiking(hiking)
       await sleep(Number(SLEEP))
 
-      console.info(hiking.title)
+      console.info(hiking.url)
     }
   }
 
