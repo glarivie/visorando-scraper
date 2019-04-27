@@ -1,0 +1,151 @@
+version: 2.1
+
+references:
+  workspace_root: &workspace_root
+    ~/app
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+  persist_to_workspace: &persist_to_workspace
+    persist_to_workspace:
+      root: *workspace_root
+      paths:
+        - .
+
+executors:
+  node_lts_container:
+    docker:
+      - image: node:lts
+    working_directory: *workspace_root
+
+commands:
+  git_clone:
+    description: Checkout repository
+    parameters:
+      filename:
+        type: string
+        default: "git-repository"
+    steps:
+      - restore_cache:
+          keys:
+            - << parameters.filename >>-{{ .Branch }}-{{ .Revision }}
+            - << parameters.filename >>-{{ .Branch }}
+            - << parameters.filename >>
+      - checkout
+      - save_cache:
+          key: << parameters.filename >>-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
+
+  install_dependencies:
+    description: Install dependencies
+    parameters:
+      lockfile:
+        type: string
+        default: "yarn.lock"
+      installer:
+        type: string
+        default: "yarn"
+      options:
+        type: string
+        default: ""
+    steps:
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "<< parameters.lockfile >>" }}
+            - dependencies
+      - run:
+          name: Install dependencies
+          command: << parameters.installer >> install << parameters.options >>
+      - save_cache:
+          key: dependencies-{{ checksum "<< parameters.lockfile >>" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+
+jobs:
+  checkout:
+    executor: node_lts_container
+    steps:
+      - git_clone
+      - *persist_to_workspace
+
+  dependencies:
+    executor: node_lts_container
+    steps:
+      - *attach_workspace
+      - install_dependencies:
+          installer: yarn
+          lockfile: yarn.lock
+      - *persist_to_workspace
+
+  lint:
+    executor: node_lts_container
+    steps:
+      - *attach_workspace
+      - run: yarn lint
+
+  env_file:
+    executor: node_lts_container
+    steps:
+      - *attach_workspace
+      - run: |
+          echo MONGODB_USERNAME=$MONGODB_USERNAME > .env
+          echo MONGODB_PORT=$MONGODB_PORT >> .env
+          echo MONGODB_HOST=$MONGODB_HOST >> .env
+          echo MONGODB_DATABASE=$MONGODB_DATABASE >> .env
+          echo MONGODB_PASSWORD=$MONGODB_PASSWORD >> .env
+          echo SLEEP=$SLEEP >> .env
+      - *persist_to_workspace
+
+  scrape:
+    executor: node_lts_container
+    steps:
+      - *attach_workspace
+      - run: yarn start
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - checkout
+      - env_file:
+          filters:
+            branches:
+              only: master
+      - dependencies:
+          requires:
+            - checkout
+      - lint:
+          requires:
+            - dependencies
+      # - scrape:
+      #     requires:
+      #       - env_file
+      #       - dependencies
+      #     filters:
+      #       branches:
+      #         only: master
+  # nightly:
+  #   jobs:
+  #     - checkout
+  #     - env_file:
+  #         filters:
+  #           branches:
+  #             only: master
+  #     - dependencies:
+  #         requires:
+  #           - checkout
+  #     - scrape:
+  #         requires:
+  #           - env_file
+  #           - dependencies
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 1 * * *" # Run everyday at 1:00 AM UTC
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
