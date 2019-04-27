@@ -121,13 +121,13 @@ workflows:
       - lint:
           requires:
             - dependencies
-      # - scrape:
-      #     requires:
-      #       - env_file
-      #       - dependencies
-      #     filters:
-      #       branches:
-      #         only: master
+      - scrape:
+          requires:
+            - env_file
+            - dependencies
+          filters:
+            branches:
+              only: master
   # nightly:
   #   jobs:
   #     - checkout

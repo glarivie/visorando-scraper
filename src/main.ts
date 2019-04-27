@@ -1,20 +1,28 @@
 import 'dotenv/config'
 
-// import './config/mongo'
+import './config/mongo'
 
 import { getRegionUrls, getHikingUrls, getHikingDetails } from './models/scraper'
-// import { saveHiking } from './models/database'
-// import { sleep } from './helpers/jsdom'
+import { saveHiking } from './models/database'
+import { sleep } from './helpers/jsdom'
 
-// const { SLEEP } = process.env
+const { SLEEP } = process.env
 
 const main = async (): Promise<void> => {
   const regionUrls = await getRegionUrls()
-  const hikingUrls = await getHikingUrls(regionUrls[0])
-  const hiking = await getHikingDetails(hikingUrls[0])
 
-  // await saveHiking(hiking)
-  console.log(hiking)
+  for (const regionUrl of regionUrls) {
+    const hikingUrls = await getHikingUrls(regionUrl)
+
+    for (const hikingUrl of hikingUrls) {
+      const hiking = await getHikingDetails(hikingUrl)
+
+      await saveHiking(hiking)
+      await sleep(Number(SLEEP))
+
+      console.info(hiking.title)
+    }
+  }
 
   process.exit(0)
 }
