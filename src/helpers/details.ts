@@ -22,7 +22,7 @@ const parseDetails = (details: string): IDetails => {
     type: get(details.match(/(A pied|A VTT|En raquettes à neige|En cyclo-route)/), '[0]', 'A pied'),
     region: get(details.match(/Région:\s+(.+) Commune/), '[1]'),
     city: get(details.match(/Commune:\s+(.+)\s\(\d+\)/), '[1]'),
-    zipCode: parseInt(get(details.match(/Commune:\s+.+\s\((\d+)\)/), '[1]'), 10),
+    zipCode: parseInt(get(details.match(/Commune:\s+.+(\d{5})/), '[1]'), 10),
     coordinate: { lat, lng },
   }
 
