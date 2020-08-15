@@ -5,7 +5,7 @@ import { parseDate } from '../helpers/date'
 import { parseDetails } from '../helpers/details'
 import parseRating from '../helpers/rating'
 
-import { IHiking } from '../types'
+import { Hiking } from '../types'
 
 const getRegionUrls = async (): Promise<string[]> => {
   const BASE_URL = 'https://www.visorando.com/'
@@ -29,7 +29,7 @@ const getHikingUrls = async (regionUrl: string): Promise<string[]> => {
     .map(url => url.trim())
 }
 
-const getHikingDetails = async (hikingUrl: string): Promise<IHiking> => {
+const getHikingDetails = async (hikingUrl: string): Promise<Hiking> => {
   const document = await extractBody(hikingUrl)
   const content = document.querySelector('.innerContentVR')
 
@@ -96,8 +96,21 @@ const getHikingDetails = async (hikingUrl: string): Promise<IHiking> => {
   })
 }
 
+const getGPXFile = async (url: string) => {
+  const document = await extractBody(url + 'carte-diagramme.html')
+  const button = document.querySelector('a#exporteRando')
+
+  if (isNil(button))
+    throw new Error(`Cannot target GPX address for ${url}`)
+
+  const file = button.getAttribute('href')
+
+  return file;
+}
+
 export {
   getRegionUrls,
   getHikingUrls,
   getHikingDetails,
+  getGPXFile,
 }

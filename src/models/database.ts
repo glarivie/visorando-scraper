@@ -1,10 +1,10 @@
 import { Document, model } from 'mongoose'
 
-import { IHiking } from '../types'
+import { Hiking } from '../types'
 
 const Hiking = model('Hiking')
 
-const saveHiking = async (hiking: IHiking): Promise<Document> => {
+const saveHiking = async (hiking: Hiking): Promise<Document> => {
   const { url } = hiking
 
   return Hiking

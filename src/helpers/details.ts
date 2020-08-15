@@ -1,8 +1,8 @@
 import { get, isEqual } from 'lodash'
 
-import { IDetails } from '../types'
+import { Details } from '../types'
 
-const parseDetails = (details: string): IDetails => {
+const parseDetails = (details: string): Details => {
   const [lat, lng] = (details.match(/Départ:\s+N\s(\d+.\d+)°\s\/\sE\s(\d+.\d+)°/) || []).slice(1, 3).map(Number)
 
   const results = {
