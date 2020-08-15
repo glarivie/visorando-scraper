@@ -39,6 +39,14 @@ interface Review {
   description: string;
 }
 
+interface Waypoint {
+  name?: string;
+  elevation?: number;
+  latitude: number;
+  longitude: number;
+  timestamp: Date;
+}
+
 interface Hiking {
   url: string;
   title: string;
@@ -50,11 +58,13 @@ interface Hiking {
   rating: Rating;
   reviews: Review[];
   images: string[];
+  waypoints?: Waypoint[];
 }
 
 export {
   Coordinate,
   Details,
   Rating,
+  Waypoint,
   Hiking,
 }

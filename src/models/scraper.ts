@@ -96,8 +96,21 @@ const getHikingDetails = async (hikingUrl: string): Promise<Hiking> => {
   })
 }
 
+const getGPXFile = async (url: string) => {
+  const document = await extractBody(url + 'carte-diagramme.html')
+  const button = document.querySelector('a#exporteRando')
+
+  if (isNil(button))
+    throw new Error(`Cannot target GPX address for ${url}`)
+
+  const file = button.getAttribute('href')
+
+  return file;
+}
+
 export {
   getRegionUrls,
   getHikingUrls,
   getHikingDetails,
+  getGPXFile,
 }

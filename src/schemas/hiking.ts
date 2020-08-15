@@ -44,6 +44,13 @@ const Hiking = new mongoose.Schema({
     description: { type: String },
   },
   images: { type: [String] },
+  waypoints: [{
+    name: { type: String, required: false },
+    elevation: { type: Number, required: false },
+    latitude: { type: Number },
+    longitude: { type: Number },
+    timestamp: { type: Date },
+  }],
 })
 
 export default Hiking
