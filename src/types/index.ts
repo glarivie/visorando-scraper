@@ -1,9 +1,9 @@
-interface ICoordinate {
+interface Coordinate {
   lat: number;
   lng: number;
 }
 
-interface IDetails {
+interface Details {
   reference?: string;
   duration?: string;
   distance: number;
@@ -21,10 +21,10 @@ interface IDetails {
   region?: string;
   city?: string;
   zipCode?: number;
-  coordinate?: ICoordinate;
+  coordinate?: Coordinate;
 }
 
-interface IRating {
+interface Rating {
   average?: number;
   count?: number;
   description?: number;
@@ -32,29 +32,29 @@ interface IRating {
   route?: number;
 }
 
-interface IReview {
+interface Review {
   author: string;
   date: Date | null;
   rating: number;
   description: string;
 }
 
-interface IHiking {
+interface Hiking {
   url: string;
   title: string;
   createdAt?: Date;
   updatedAt?: Date;
   overview: string;
-  details: IDetails;
+  details: Details;
   steps: string[];
-  rating: IRating;
-  reviews: IReview[];
+  rating: Rating;
+  reviews: Review[];
   images: string[];
 }
 
 export {
-  ICoordinate,
-  IDetails,
-  IRating,
-  IHiking,
+  Coordinate,
+  Details,
+  Rating,
+  Hiking,
 }

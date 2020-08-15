@@ -1,9 +1,9 @@
-import { ICoordinate } from '../types'
+import { Coordinate } from '../types'
 
 const deg2rad = (deg: number): number => deg * (Math.PI / 180)
 
 // Return distance between two points in km
-const getDistanceBetween = (start: ICoordinate, end: ICoordinate): number => {
+const getDistanceBetween = (start: Coordinate, end: Coordinate): number => {
   const R = 6371 // Radius of the earth in km
   const dLat = deg2rad(end.lat - start.lat)
   const dLon = deg2rad(end.lng - start.lng)

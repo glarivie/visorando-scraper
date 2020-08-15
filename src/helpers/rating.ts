@@ -1,10 +1,10 @@
-import { IRating } from '../types'
+import { Rating } from '../types'
 
 const toFloat = (v: string): number => parseFloat(v.replace('Non utilisé', '0'))
 
 const toInt = (v: string): number => parseInt(v.replace('Non utilisé', '0'), 10)
 
-const parseRating = (arr: string[]): IRating => arr.reduce((acc, line) => {
+const parseRating = (arr: string[]): Rating => arr.reduce((acc, line) => {
   const [key, value] = line.split(':').map(el => el.trim())
 
   if (key.includes('Moyenne globale'))
