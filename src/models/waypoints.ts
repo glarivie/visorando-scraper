@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toNumber } from 'lodash';
 
 import type { Hiking, Waypoint } from 'types';
 
@@ -19,13 +20,14 @@ const extractWaypoints = async (idRandonnee: Hiking['id']): Promise<Waypoint[]> 
 
   return geojson.features.map(({ geometry, properties }) => {
     const [longitude, latitude] = geometry.coordinates;
+    const index = toNumber(properties.index);
 
     return {
-      index: properties.index,
-      step: properties.title,
-      elevation: elevations[properties.index],
-      latitude,
-      longitude,
+      index,
+      step: toNumber(properties.title),
+      elevation: toNumber(elevations[index]),
+      latitude: toNumber(latitude),
+      longitude: toNumber(longitude),
     }
   })
 }
