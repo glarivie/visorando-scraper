@@ -18,14 +18,13 @@ const extractWaypoints = async (idRandonnee: Hiking['id']): Promise<Waypoint[]> 
 
   const elevations: Array<Waypoint['elevation']> = chartdata.data.map(([,e]) => e);
 
-  return geojson.features.map(({ geometry, properties }) => {
+  return geojson.features.map(({ geometry, properties }, index: number): Waypoint => {
     const [longitude, latitude] = geometry.coordinates;
-    const index = toNumber(properties.index);
 
     return {
       index,
       step: toNumber(properties.title),
-      elevation: toNumber(elevations[index]),
+      elevation: elevations[index],
       latitude: toNumber(latitude),
       longitude: toNumber(longitude),
     }
