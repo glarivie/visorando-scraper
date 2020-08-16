@@ -40,14 +40,15 @@ interface Review {
 }
 
 interface Waypoint {
-  name?: string;
-  elevation?: number;
+  index: number;
+  step: number;
+  elevation: number;
   latitude: number;
   longitude: number;
-  timestamp: Date;
 }
 
 interface Hiking {
+  id: number;
   url: string;
   title: string;
   createdAt?: Date;

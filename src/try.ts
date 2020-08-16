@@ -1,21 +1,15 @@
 import 'dotenv/config'
 
-// import { getHikingDetails } from './models/scraper'
-import { getGPXFile } from './models/scraper'
-import { extractGPXData } from './models/gpx'
+import { getHikingDetails } from './models/scraper'
+import { extractWaypoints } from './models/waypoints'
 
 const main = async (): Promise<void> => {
   const url = 'https://www.visorando.com/randonnee-la-dordogne-touristique-a-domme/'
-  // const hiking = await getHikingDetails(url)
-  const file = await getGPXFile(url)
+  const { id } = await getHikingDetails(url)
 
-  console.debug(file)
+  const waypoints = await extractWaypoints(id)
 
-  if (file) {
-    const waypoints = await extractGPXData(file)
-
-    console.debug(waypoints)
-  }
+  console.debug(waypoints)
 
   process.exit(0)
 }

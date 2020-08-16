@@ -1,10 +1,9 @@
 import mongoose from 'mongoose'
 
 const Hiking = new mongoose.Schema({
+  id: { type: Number, required: true, unique: true },
   url: { type: String, required: true, unique: true },
   title: { type: String },
-  createdAt: { type: Date },
-  updatedAt: { type: Date },
   overview: { type: String },
   details: {
     reference: { type: String },
@@ -45,12 +44,17 @@ const Hiking = new mongoose.Schema({
   },
   images: { type: [String] },
   waypoints: [{
-    name: { type: String, required: false },
-    elevation: { type: Number, required: false },
+    index: { type: Number },
+    step: { type: Number },
+    elevation: { type: Number },
     latitude: { type: Number },
     longitude: { type: Number },
-    timestamp: { type: Date },
   }],
+}, {
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  },
 })
 
 export default Hiking
