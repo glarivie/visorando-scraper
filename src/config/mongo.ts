@@ -15,6 +15,7 @@ const options = {
   useFindAndModify: false,
   useNewUrlParser: true,
   promiseLibrary: Promise,
+  useUnifiedTopology: true,
 }
 
 // Create Mongo database connection

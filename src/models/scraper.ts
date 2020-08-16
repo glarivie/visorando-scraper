@@ -1,4 +1,4 @@
-import { isEmpty, isNil, get } from 'lodash'
+import { isEmpty, isNil, get, toNumber } from 'lodash'
 
 import { extractBody } from '../helpers/jsdom'
 import { parseDate } from '../helpers/date'
@@ -36,6 +36,7 @@ const getHikingDetails = async (hikingUrl: string): Promise<Hiking> => {
   if (isNil(content))
     throw new Error(`Cannot target content at ${hikingUrl}`)
 
+  const id = content.querySelector('.liste-topics-blanc-titre .pull-right')
   const title = content.querySelector('h1[itemprop="name"]')
   const date = content.querySelector('.rando-date')
   const overview = content.querySelector('p')
@@ -62,6 +63,7 @@ const getHikingDetails = async (hikingUrl: string): Promise<Hiking> => {
   const images = content.querySelectorAll('.homeListPhoto > img')
 
   return ({
+    id: toNumber((get(id, 'textContent', '') as string).replace('n°', '')),
     url: hikingUrl,
     title: (get(title, 'textContent', '') as string).trim(),
     ...parseDate(get(date, 'textContent', '') as string),
@@ -96,21 +98,21 @@ const getHikingDetails = async (hikingUrl: string): Promise<Hiking> => {
   })
 }
 
-const getGPXFile = async (url: string) => {
-  const document = await extractBody(url + 'carte-diagramme.html')
-  const button = document.querySelector('a#exporteRando')
+// const getGPXFile = async (url: string) => {
+//   const document = await extractBody(url + 'carte-diagramme.html')
+//   const button = document.querySelector('a#exporteRando')
 
-  if (isNil(button))
-    throw new Error(`Cannot target GPX address for ${url}`)
+//   if (isNil(button))
+//     throw new Error(`Cannot target GPX address for ${url}`)
 
-  const file = button.getAttribute('href')
+//   const file = button.getAttribute('href')
 
-  return file;
-}
+//   return file;
+// }
 
 export {
   getRegionUrls,
   getHikingUrls,
   getHikingDetails,
-  getGPXFile,
+  // getGPXFile,
 }

@@ -2,8 +2,8 @@ import 'dotenv/config'
 
 import './config/mongo'
 
-import { getRegionUrls, getHikingUrls, getHikingDetails, getGPXFile } from './models/scraper'
-import { extractGPXData } from './models/gpx'
+import { getRegionUrls, getHikingUrls, getHikingDetails } from './models/scraper'
+import { extractWaypoints } from './models/waypoints'
 import { saveHiking } from './models/database'
 import { sleep } from './helpers/jsdom'
 
@@ -29,8 +29,10 @@ const main = async (): Promise<void> => {
       console.info(hikingUrl)
 
       const hiking = await getHikingDetails(hikingUrl)
-      const file = await getGPXFile(hikingUrl)
-      const waypoints = file ? await extractGPXData(file) : []
+
+      await sleep(Number(SLEEP))
+
+      const waypoints = await extractWaypoints(hiking.id)
 
       await saveHiking({ ...hiking, waypoints })
       await sleep(Number(SLEEP))
