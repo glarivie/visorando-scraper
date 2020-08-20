@@ -1,9 +1,18 @@
-import { get, isEqual } from 'lodash'
+import { get, isEqual, toNumber } from 'lodash'
 
 import { Details } from '../types'
 
 const parseDetails = (details: string): Details => {
-  const [lat, lng] = (details.match(/Départ:\s+N\s(\d+.\d+)°\s\/\sE\s(\d+.\d+)°/) || []).slice(1, 3).map(Number)
+  const [lat, lng] = (details
+    .match(/Départ:\s+([N|S]\s\d+.\d+)°\s\/\s([E|O]\s\d+.\d+)°/) as string[])
+    .slice(1, 3)
+    .map(el => {
+      const [cardinal, value] = el.split(/\s/)
+
+      return (cardinal.startsWith('S') || cardinal.startsWith('O'))
+        ? toNumber('-' + value)
+        : toNumber(value)
+    })
 
   return {
     ign: get(details.match(/Ref.\s+(\d+[A-Z]{2})/), '[1]'),
