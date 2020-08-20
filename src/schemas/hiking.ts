@@ -6,7 +6,7 @@ const Hiking = new mongoose.Schema({
   title: { type: String },
   overview: { type: String },
   details: {
-    reference: { type: String },
+    ign: { type: String },
     duration: { type: String },
     distance: { type: Number },
     vertical: {
@@ -23,9 +23,9 @@ const Hiking = new mongoose.Schema({
     region: { type: String },
     city: { type: String },
     zipCode: { type: Number },
-    coordinate: {
-      lat: { type: Number },
-      lng: { type: Number },
+    location: {
+      type: { type: String, enum: ['Point'], required: true },
+      coordinates: { type: [Number], required: true },
     },
   },
   steps: { type: [String] },
@@ -56,5 +56,7 @@ const Hiking = new mongoose.Schema({
     updatedAt: 'updated_at',
   },
 })
+
+Hiking.index({ location: '2dsphere' }) // speed up geospatial queries
 
 export default Hiking

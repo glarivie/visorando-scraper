@@ -1,10 +1,5 @@
-interface Coordinate {
-  lat: number;
-  lng: number;
-}
-
 interface Details {
-  reference?: string;
+  ign?: string;
   duration?: string;
   distance: number;
   vertical: {
@@ -21,7 +16,11 @@ interface Details {
   region?: string;
   city?: string;
   zipCode?: number;
-  coordinate?: Coordinate;
+  location: {
+    type: 'Point';
+    // longitude comes first in a GeoJSON coordinate array, not latitude.
+    coordinates: number[];
+  };
 }
 
 interface Rating {
@@ -63,7 +62,6 @@ interface Hiking {
 }
 
 export {
-  Coordinate,
   Details,
   Rating,
   Waypoint,

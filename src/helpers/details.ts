@@ -5,8 +5,8 @@ import { Details } from '../types'
 const parseDetails = (details: string): Details => {
   const [lat, lng] = (details.match(/Départ:\s+N\s(\d+.\d+)°\s\/\sE\s(\d+.\d+)°/) || []).slice(1, 3).map(Number)
 
-  const results = {
-    reference: get(details.match(/Ref.\s+(\d+[A-Z]{2})/), '[1]'),
+  return {
+    ign: get(details.match(/Ref.\s+(\d+[A-Z]{2})/), '[1]'),
     duration: get(details.match(/Durée moyenne:\s+(\d+h\d{2})\[\?\]/), '[1]'),
     distance: parseFloat(get(details.match(/Distance:\s+(\d+.?\d?\d?)km/), '[1]', 0)),
     vertical: {
@@ -20,13 +20,11 @@ const parseDetails = (details: string): Details => {
     difficulty: get(details.match(/Difficulté:\s+(\w+)/), '[1]'),
     loop: isEqual(get(details.match(/Retour point de départ:\s+([Oo]ui|[Nn]on)/), '[1]'), 'Oui'),
     type: get(details.match(/(A pied|A VTT|En raquettes à neige|En cyclo-route)/), '[0]', 'A pied'),
-    region: get(details.match(/Région:\s+(.+) Commune/), '[1]'),
+    region: get(details.match(/Région:\s+(.+) Commune/), '[1]', undefined),
     city: get(details.match(/Commune:\s+(.+)\s\(\d+\)/), '[1]'),
     zipCode: parseInt(get(details.match(/Commune:\s+.+(\d{5})/), '[1]'), 10),
-    coordinate: { lat, lng },
+    location: { type: 'Point', coordinates: [lng, lat] },
   }
-
-  return results
 }
 
 export {
