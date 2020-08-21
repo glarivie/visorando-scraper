@@ -1,6 +1,11 @@
-import mongoose from 'mongoose'
+import { Schema } from 'mongoose'
 
-const Hiking = new mongoose.Schema({
+const Point = new Schema({
+  type: { type: String, enum: ['Point'], required: true },
+  coordinates: { type: [Number], required: true },
+})
+
+const Hiking = new Schema({
   id: { type: Number, required: true, unique: true },
   url: { type: String, required: true, unique: true },
   title: { type: String },
@@ -23,10 +28,8 @@ const Hiking = new mongoose.Schema({
     region: { type: String },
     city: { type: String },
     zipCode: { type: Number },
-    location: {
-      type: { type: String, enum: ['Point'], required: true },
-      coordinates: { type: [Number], required: true },
-    },
+    departure: { type: Point, required: true },
+    arrival: { type: Point },
   },
   steps: { type: [String] },
   rating: {
@@ -57,6 +60,6 @@ const Hiking = new mongoose.Schema({
   },
 })
 
-Hiking.index({ 'details.location': '2dsphere' }) // speed up geospatial queries
+Hiking.index({ 'details.departure': '2dsphere' }) // speed up geospatial queries
 
 export default Hiking
