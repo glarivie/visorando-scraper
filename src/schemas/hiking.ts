@@ -57,6 +57,6 @@ const Hiking = new mongoose.Schema({
   },
 })
 
-Hiking.index({ location: '2dsphere' }) // speed up geospatial queries
+Hiking.index({ 'details.location': '2dsphere' }) // speed up geospatial queries
 
 export default Hiking
