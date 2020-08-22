@@ -1,10 +1,10 @@
-import { isNil } from 'lodash'
+import { isNil } from 'lodash';
 
 const withoutHTML = (value: string | null): string | null =>
   !isNil(value)
     ? value.replace(new RegExp(/(<([^>]+)>)/gi), '')
-    : value
+    : value;
 
 export {
   withoutHTML,
-}
+};

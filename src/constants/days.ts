@@ -6,6 +6,6 @@ const days = {
   vendredi: 'friday',
   samedi: 'saturday',
   dimanche: 'sunday',
-}
+};
 
-export default days
+export default days;

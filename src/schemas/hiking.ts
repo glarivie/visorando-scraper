@@ -1,9 +1,9 @@
-import { Schema } from 'mongoose'
+import { Schema } from 'mongoose';
 
 const Point = new Schema({
   type: { type: String, enum: ['Point'], required: true },
   coordinates: { type: [Number], required: true },
-})
+});
 
 const Hiking = new Schema({
   id: { type: Number, required: true, unique: true },
@@ -58,8 +58,8 @@ const Hiking = new Schema({
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   },
-})
+});
 
-Hiking.index({ 'details.departure': '2dsphere' }) // speed up geospatial queries
+Hiking.index({ 'details.departure': '2dsphere' }); // speed up geospatial queries
 
-export default Hiking
+export default Hiking;

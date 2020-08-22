@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import { toNumber } from 'lodash';
 
 import type { Hiking, Waypoint } from 'types';
@@ -12,7 +12,7 @@ const extractWaypoints = async (idRandonnee: Hiking['id']): Promise<Waypoint[]> 
       wholePointsData: 1,
       idRandonnee,
     },
-  })
+  });
 
   const { chartdata, geojson } = data;
 
@@ -27,10 +27,10 @@ const extractWaypoints = async (idRandonnee: Hiking['id']): Promise<Waypoint[]> 
       elevation: elevations[index],
       latitude: toNumber(latitude),
       longitude: toNumber(longitude),
-    }
-  })
-}
+    };
+  });
+};
 
 export {
   extractWaypoints,
-}
+};

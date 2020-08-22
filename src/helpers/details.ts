@@ -1,18 +1,18 @@
-import { get, isEqual, toNumber, isNil } from 'lodash'
+import { get, isEqual, toNumber, isNil } from 'lodash';
 
-import { Details, Point } from '../types'
+import { Details, Point } from '../types';
 
 const getPoint = (details: string) => (regex: RegExp): Point | undefined => {
-  const matches = details.match(regex)
+  const matches = details.match(regex);
 
   if (isNil(matches)) return undefined;
 
   const [lat, lng] = matches.slice(1, 3).map(el => {
-    const [cardinal, value] = el.split(/\s/)
+    const [cardinal, value] = el.split(/\s/);
 
     return (cardinal.startsWith('S') || cardinal.startsWith('O'))
       ? toNumber('-' + value)
-      : toNumber(value)
+      : toNumber(value);
   })
 
   return { type: 'Point', coordinates: [lng, lat] };
@@ -39,9 +39,9 @@ const parseDetails = (details: string): Details => {
     zipCode: parseInt(get(details.match(/Commune:\s+.+(\d{5})/), '[1]'), 10),
     departure: getPoint(details)(/Départ:\s+([N|S]\s\d+.\d+)°\s\/\s([E|O]\s\d+.\d+)°/) as Point,
     arrival: getPoint(details)(/Arrivée:\s+([N|S]\s\d+.\d+)°\s\/\s([E|O]\s\d+.\d+)°/),
-  }
-}
+  };
+};
 
 export {
   parseDetails,
-}
+};

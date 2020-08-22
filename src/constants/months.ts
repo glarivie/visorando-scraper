@@ -11,6 +11,6 @@ const months = {
   octobre: 'october',
   novembre: 'november',
   décembre: 'december',
-}
+};
 
-export default months
+export default months;

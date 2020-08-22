@@ -1,13 +1,13 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
-import './config/mongo'
+import './config/mongo';
 
-import { getRegionUrls, getHikingUrls, getHikingDetails } from './models/scraper'
-import { extractWaypoints } from './models/waypoints'
-import { saveHiking } from './models/database'
-import { sleep } from './helpers/jsdom'
+import { getRegionUrls, getHikingUrls, getHikingDetails } from './models/scraper';
+import { extractWaypoints } from './models/waypoints';
+import { saveHiking } from './models/database';
+import { sleep } from './helpers/jsdom';
 
-const { SLEEP } = process.env
+const { SLEEP } = process.env;
 
 process
   .on('unhandledRejection', (reason, p) => {
@@ -17,29 +17,29 @@ process
   .on('uncaughtException', err => {
     console.error(err, 'Uncaught Exception thrown')
     process.exit(1)
-  })
+  });
 
 const main = async (): Promise<void> => {
-  const regionUrls = await getRegionUrls()
+  const regionUrls = await getRegionUrls();
 
   for (const regionUrl of regionUrls) {
-    const hikingUrls = await getHikingUrls(regionUrl)
+    const hikingUrls = await getHikingUrls(regionUrl);
 
     for (const hikingUrl of hikingUrls) {
-      console.info(hikingUrl)
+      console.info(hikingUrl);
 
-      const hiking = await getHikingDetails(hikingUrl)
+      const hiking = await getHikingDetails(hikingUrl);
 
-      await sleep(Number(SLEEP))
+      await sleep(Number(SLEEP));
 
-      const waypoints = await extractWaypoints(hiking.id)
+      const waypoints = await extractWaypoints(hiking.id);
 
-      await saveHiking({ ...hiking, waypoints })
-      await sleep(Number(SLEEP))
+      await saveHiking({ ...hiking, waypoints });
+      await sleep(Number(SLEEP));
     }
   }
 
-  process.exit(0)
+  process.exit(0);
 }
 
-main()
+main();

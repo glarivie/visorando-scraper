@@ -1,7 +1,7 @@
-import days from './days'
-import months from './months'
+import days from './days';
+import months from './months';
 
 export {
   days,
   months,
-}
+};
