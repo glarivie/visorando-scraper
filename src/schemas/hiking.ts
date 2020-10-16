@@ -39,12 +39,12 @@ const Hiking = new Schema({
     map: { type: Number },
     route: { type: Number },
   },
-  reviews: {
+  reviews: [{
     author: { type: String },
     date: { type: Date },
     rating: { type: Number },
     description: { type: String },
-  },
+  }],
   images: { type: [String] },
   waypoints: [{
     index: { type: Number },
