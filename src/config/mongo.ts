@@ -4,7 +4,6 @@ import Hiking from '../schemas/hiking';
 
 const {
   MONGODB_USERNAME,
-  MONGODB_PORT,
   MONGODB_PASSWORD,
   MONGODB_HOST,
   MONGODB_DATABASE,
@@ -24,7 +23,7 @@ mongoose.connect(
   options,
 );
 
-mongoose.connection.on('connected', () => console.info('[MongoDB] is connected on port', MONGODB_PORT));
+mongoose.connection.on('connected', () => console.info('[MongoDB] is connected'));
 mongoose.connection.on('disconnected', () => console.warn('[MongoDB] is disconnected'));
 
 // Register Models
