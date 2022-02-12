@@ -15,7 +15,7 @@
     "test": "NODE_ENV=test jest --env=node --verbose --detectOpenHandles --forceExit"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "dotenv": "^8.2.0",
     "jsdom": "^16.4.0",
     "lodash": "^4.17.21",
